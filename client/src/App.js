@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoElement from "./components/TodoElement";
 
 function App() {
-  let [id, setId] = useState(0)
+  const url = "http://localhost:3001/api/todo";
+
+  
   const [todo, setTodo] = useState('');
   const [todos, setTodos] = useState([]);
 
-
+  useEffect(() => {
+    fetch(url).then(response => response.json()).then(todos => {
+      console.log("todos :", todos);
+      setTodos(todos)
+    }).catch(e => console.error(e))
+  }, [todo])
   
   const handleInputChange = (e) => {
 
@@ -15,9 +22,13 @@ function App() {
 
   const handleOnClick = () => {
     if(todo) {
-      setId(++id)
-      setTodos([...todos, {item: todo, id, done: false}]);
+      // ;
       setTodo('')
+      fetch(url, {method: "POST", body: JSON.stringify({item: todo, done: false}), headers: { 'Content-Type': 'application/json' },}, ).then(response => {
+        return response.json()
+      }).then(r => {
+        setTodos([...todos, {item: todo, id: r ? r._id : null ,done: false}])
+      })
     }
   }
 
@@ -37,7 +48,7 @@ function App() {
 
         <div>
           <ul>
-            {todos.map((t) => (<TodoElement todo={t} key={t.item} toggle={toggleDone}/>))}
+            {todos.map((t) => (<TodoElement todo={t} key={t['_id']} toggle={toggleDone}/>))}
           </ul>
         </div>
       </main>
