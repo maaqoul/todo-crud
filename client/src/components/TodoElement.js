@@ -11,11 +11,14 @@ const TodoElement = (props) => {
       <button onClick={() => props.toggle(props.todo.id)}>done</button>
     </li>
            */
-    <Container>
+    <Container className="mt-2">
       <Row xs="auto">
         <Col lg>
-          {" "}
-          <ListGroup.Item variant="primary">{props.todo.item}</ListGroup.Item>
+          <ListGroup as="ul">
+            <ListGroup.Item as="li" active>
+              {props.todo.item}
+            </ListGroup.Item>
+          </ListGroup>
         </Col>
         <Col>
           <Button
