@@ -15,7 +15,11 @@ const TodoElement = (props) => {
       <Row xs="auto">
         <Col lg>
           <ListGroup as="ul">
-            <ListGroup.Item as="li" active>
+            <ListGroup.Item
+              className=" {{props.todo.done ? text-decoration-line-through : text-decoration-none}}"
+              as="li"
+              active
+            >
               {props.todo.item}
             </ListGroup.Item>
           </ListGroup>
@@ -48,6 +52,16 @@ const TodoElement = (props) => {
             id="button-addon2"
           >
             Delete
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            className="mx-auto"
+            variant="danger"
+            onClick={props.toggle(props.todo.id)}
+            id="button-addon2"
+          >
+            Done !{" "}
           </Button>
         </Col>
       </Row>
