@@ -6,6 +6,11 @@ import App from "./App";
 React boostrap configurations
 
 */
+/*
+
+test comment
+
+*/
 import "../node_modules/react-bootstrap/dist/react-bootstrap";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 

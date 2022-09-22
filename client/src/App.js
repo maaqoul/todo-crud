@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import TodoElement from "./components/TodoElement";
 import Button from "react-bootstrap/Button";
-
+import Container from "react-bootstrap/Container";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 function App() {
   const url = "http://localhost:3001/api/todo";
 
@@ -51,12 +55,45 @@ function App() {
 
   return (
     <div className="App">
-      <header>Icon</header>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <Nav className="mx-auto">
+            <Nav.Link href="#home">TodoAPP</Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+      <br />
       <main>
-        <input type="text" value={todo} onChange={handleInputChange} /> |{" "}
-        <Button variant="primary" onClick={handleOnClick}>
+        <InputGroup className="mb-3">
+          <Form.Control
+            type="text"
+            value={todo}
+            onChange={handleInputChange}
+            placeholder="Enter your Todo"
+            aria-label="Recipient's username"
+            aria-describedby="basic-addon2"
+          />
+          <Button
+            className="mx-auto"
+            variant="primary"
+            onClick={handleOnClick}
+            id="button-addon2"
+          >
+            Add
+          </Button>
+        </InputGroup>
+        {/* <input
+          className="mx-auto"
+          type="text"
+          value={todo}
+          onChange={handleInputChange}
+        />{" "}
+        |{" "}
+        <Button className="mx-auto" variant="primary" onClick={handleOnClick}>
           Add
         </Button>{" "}
+           */}
+
         <div>
           <ul>
             {todos.map((t) => (
