@@ -1,4 +1,3 @@
-import "mdb-react-ui-kit/dist/css/mdb.min.css";
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");

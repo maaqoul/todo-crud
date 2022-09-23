@@ -20,14 +20,17 @@ function App() {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    fetch(url)
+    if(!todos.length) {
+      fetch(url)
       .then((response) => response.json())
       .then((todos) => {
-        console.log("todos :", todos);
-        setTodos(todos);
+        if(todos) {
+          setTodos(todos);
+        }
       })
       .catch((e) => console.error(e));
-  }, [todo]);
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     setTodo(e.target.value);
@@ -48,17 +51,29 @@ function App() {
         .then((r) => {
           setTodos([
             ...todos,
-            { item: todo, id: r ? r._id : null, done: false },
+            { item: todo, _id: r ? r._id : null, done: false },
           ]);
         });
     }
   };
 
   const toggleDone = (id) => {
-    const todo = todos.find((todo) => todo.id === id);
+    const todo = todos.find((todo) => todo._id === id);
     todo.done = !todo.done;
-    setTodos([...todos]);
+    console.log(todo)
+    const urlWithId = `${url}/${id}`;
+    fetch(urlWithId, {method: "PATCH", body: JSON.stringify(todo), headers: { "Content-Type": "application/json" },}).then(r => r.json()).then((r) => {
+      console.log('r :', r)
+      console.log('todo after:', todo)
+      setTodos([...todos]);
+    }).catch(e => console.log(e))
   };
+
+  const deleteElement = (id) => {
+    const filteredTodos = todos.filter(todo=> todo._id !== id);
+    setTodos([...filteredTodos])
+    fetch(`${url}/${id}`, {method: "DELETE"}).then(r=>r.json()).then(r => console.log('element deleted')).catch(e => console.error(e));
+  }
 
   return (
     <div className="App">
@@ -89,22 +104,10 @@ function App() {
             Add
           </Button>
         </InputGroup>
-        {/* <input
-          className="mx-auto"
-          type="text"
-          value={todo}
-          onChange={handleInputChange}
-        />{" "}
-        |{" "}
-        <Button className="mx-auto" variant="primary" onClick={handleOnClick}>
-          Add
-        </Button>{" "}
-           */}
-
         <div>
           <ul>
             {todos.map((t) => (
-              <TodoElement todo={t} key={t["_id"]} toggle={toggleDone} />
+              <TodoElement todo={t} key={t._id} toggle={toggleDone} delete={deleteElement}/>
             ))}
           </ul>
         </div>
@@ -119,22 +122,22 @@ function App() {
           </div>
 
           <div>
-            <a href="" className="me-4 text-reset">
+            <a  className="me-4 text-reset">
               <MDBIcon fab icon="facebook-f" />
             </a>
-            <a href="" className="me-4 text-reset">
+            <a  className="me-4 text-reset">
               <MDBIcon fab icon="twitter" />
             </a>
-            <a href="" className="me-4 text-reset">
+            <a  className="me-4 text-reset">
               <MDBIcon fab icon="google" />
             </a>
-            <a href="" className="me-4 text-reset">
+            <a  className="me-4 text-reset">
               <MDBIcon fab icon="instagram" />
             </a>
-            <a href="" className="me-4 text-reset">
+            <a  className="me-4 text-reset">
               <MDBIcon fab icon="linkedin" />
             </a>
-            <a href="" className="me-4 text-reset">
+            <a  className="me-4 text-reset">
               <MDBIcon fab icon="github" />
             </a>
           </div>
